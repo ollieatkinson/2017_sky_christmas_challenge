@@ -88,12 +88,8 @@ impl Iterator for PrimeIterator {
         			return (current, n);
 			
         		}
-        
-                if i == 2 {
-                    i += 1;
-                } else {
-                    i += 2;
-                }
+                
+                i += if i == 2 { 1 } else { 2 }
         
         	}
     
