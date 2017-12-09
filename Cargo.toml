@@ -3,4 +3,5 @@ name = "xmas_challenge"
 version = "0.1.0"
 authors = ["Oliver Atkinson <oliveratkinson@me.com>"]
 
-[dependencies]
+[profile.dev]
+opt-level = 1

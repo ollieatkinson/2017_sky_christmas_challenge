@@ -29,13 +29,16 @@ fn find_sum_of_divisors_over(n: u32) -> (u32, u32) {
     
 }
 
+fn prime_factors(n: u32) -> PrimeIterator {
+    PrimeIterator { 
+        next: n
+    }
+}
+
 #[inline]
 fn sum_of_divisors(n: u32) -> u32 {
 
-    PrimeIterator { 
-        next: n, 
-        first: true 
-    }.fold(1, |sum, factor| {
+    prime_factors(n).fold(1, |sum, factor| {
         sum * (factor.prime.pow(factor.count as u32 + 1) - 1) / (factor.prime - 1)
     })
 
@@ -51,8 +54,7 @@ struct Prime {
 }
 
 struct PrimeIterator {
-    next: u32,
-    first: bool
+    next: u32
 }
 
 impl Iterator for PrimeIterator {
@@ -61,11 +63,11 @@ impl Iterator for PrimeIterator {
     
     fn next(&mut self) -> Option<Self::Item> {
         
-        fn calculate_factor(mut n: u32, start: u32, increment: u32) -> (Prime, u32) {
+        fn calculate_factor(mut n: u32) -> (Prime, u32) {
         
         	let sqrt = (n as f64).sqrt() as u32;
         
-        	let mut i = start;
+        	let mut i = 2;
         
         	while n > 1 && i <= sqrt {
         
@@ -87,7 +89,12 @@ impl Iterator for PrimeIterator {
 			
         		}
         
-        		i += increment;
+                if i == 2 {
+                    i += 1;
+                } else {
+                    i += 2;
+                }
+        
         	}
     
         	return (Prime { prime: n, count: 1 }, 1);
@@ -97,19 +104,8 @@ impl Iterator for PrimeIterator {
         if self.next == 1 {
             return None;
         }
-        
-        let mut start: u32 = 3;
-        let mut increment: u32 = 2;
-        
-        if self.first {
-            
-            start      = 2;
-            increment  = 1;
-            self.first = false;
-            
-        }
-        
-        let (prime, remainder) = calculate_factor(self.next, start, increment);
+
+        let (prime, remainder) = calculate_factor(self.next);
     
         self.next = remainder;
     
@@ -120,13 +116,6 @@ impl Iterator for PrimeIterator {
 }
 
 // Test Cases - prime_factors
-
-fn prime_factors(n: u32) -> PrimeIterator {
-    PrimeIterator { 
-        next: n, 
-        first: true 
-    }
-}
 
 #[test]
 fn prime_factors_of_two() {
@@ -225,4 +214,9 @@ fn find_sum_of_divisors_over_500() {
 #[test]
 fn find_sum_of_divisors_over_12345() {
     assert_eq!(find_sum_of_divisors_over(12345), (3600, 12493));
+}
+
+#[test]
+fn find_sum_of_divisors_over_5000000() {
+    assert_eq!(find_sum_of_divisors_over(5000000), (1164240, 5088960));
 }
