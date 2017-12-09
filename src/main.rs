@@ -29,10 +29,9 @@ fn find_sum_of_divisors_over(n: u32) -> (u32, u32) {
     
 }
 
+#[inline]
 fn prime_factors(n: u32) -> PrimeIterator {
-    PrimeIterator { 
-        next: n
-    }
+    PrimeIterator { next: n }
 }
 
 #[inline]
@@ -65,37 +64,37 @@ impl Iterator for PrimeIterator {
         
         fn calculate_factor(mut n: u32) -> (Prime, u32) {
         
-        	let sqrt = (n as f64).sqrt() as u32;
+         	let sqrt = (n as f64).sqrt() as u32;
+
+         	let mut i = 2;
         
-        	let mut i = 2;
-        
-        	while n > 1 && i <= sqrt {
-        
-        		if n % i == 0 {
-            
-        			let mut current = Prime { 
-                        prime: i, 
-                        count: 1 
-                    };
-            
-        			n /= i;
-			
-        			while n % i == 0  {
-        				current.count += 1;
-        				n /= i;
-        			}
-            
-        			return (current, n);
-			
-        		}
+         	while n > 1 && i <= sqrt {
                 
-                i += if i == 2 { 1 } else { 2 }
+         		if n % i == 0 {
+            
+         			let mut current = Prime { 
+                         prime: i, 
+                         count: 1 
+                     };
+            
+         			n /= i;
+			
+         			while n % i == 0  {
+         				current.count += 1;
+         				n /= i;
+         			}
+            
+         			return (current, n);
+			
+         		}
+                
+                 i += if i == 2 { 1 } else { 2 }
         
-        	}
+         	}
     
-        	return (Prime { prime: n, count: 1 }, 1);
+         	return (Prime { prime: n, count: 1 }, 1);
         
-        }
+         }
         
         if self.next == 1 {
             return None;
@@ -192,7 +191,7 @@ fn sum_of_divisors_of_200() {
 
 #[test]
 fn sum_of_divisors_of_9000() {
-    assert_eq!(sum_of_divisors(9000), 30420);
+    assert_eq!(sum_of_divisors(9_000), 30_420);
 }
 
 // Test Cases - find_sum_of_divisors_over
@@ -209,10 +208,10 @@ fn find_sum_of_divisors_over_500() {
 
 #[test]
 fn find_sum_of_divisors_over_12345() {
-    assert_eq!(find_sum_of_divisors_over(12345), (3600, 12493));
+    assert_eq!(find_sum_of_divisors_over(12_345), (3_600, 12_493));
 }
 
 #[test]
 fn find_sum_of_divisors_over_5000000() {
-    assert_eq!(find_sum_of_divisors_over(5000000), (1164240, 5088960));
+    assert_eq!(find_sum_of_divisors_over(5_000_000), (1_164_240, 5_088_960));
 }
